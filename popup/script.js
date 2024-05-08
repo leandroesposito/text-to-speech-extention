@@ -10,9 +10,6 @@ const btnStop = document.querySelector("#btnStop");
 
 const progressBar = document.querySelector("#progress");
 
-const englishWords = new Set(["the", "be", "of", "and", "a", "in", "to", "have", "it", "to", "for", "I", "that", "you", "he", "on", "with", "do", "at", "by", "not", "this", "but", "from", "they", "his", "that", "she", "or", "which", "as", "we", "an", "say", "will", "would", "can", "if", "their", "go", "what", "there", "all", "get", "her", "make", "who", "as", "out", "up", "see", "know", "time", "take", "them", "some", "could", "so", "him", "year", "into", "its", "then", "think", "my", "come", "than", "more", "about", "now", "last", "your", "me", "no", "other", "give", "just", "should", "these", "people", "also", "well", "any", "only", "new", "very", "when", "may", "way", "look", "like", "use", "her", "such", "how", "because", "when", "as", "good", "find",]);
-const spanishWords = new Set(["de", "la", "que", "el", "en", "y", "a", "los", "se", "del", "las", "un", "por", "con", "no", "una", "su", "para", "es", "al", "lo", "como", "más", "o", "pero", "sus", "le", "ha", "me", "si", "sin", "sobre", "este", "ya", "entre", "cuando", "todo", "esta", "ser", "son", "dos", "también", "fue", "había", "era", "muy", "años", "hasta", "desde", "está", "mi", "porque", "qué", "sólo", "han", "yo", "hay", "vez", "puede", "todos", "así", "nos", "ni", "parte", "tiene", "él", "uno", "donde", "bien", "tiempo", "mismo", "ese", "ahora", "cada", "e", "vida", "otro", "después", "te", "otros", "aunque", "esa", "eso", "hace", "otra", "gobierno", "tan", "durante", "siempre", "día", "tanto", "ella", "tres", "sí", "dijo", "sido", "gran", "país", "según", "menos",]);
-
 let voices = [];
 let speaking = false;
 
@@ -26,12 +23,6 @@ const synth = window.speechSynthesis;
 synth.onvoiceschanged = _ => {
     loadVoices();
 }
-
-const countMatches = (wordList, text) => {
-    const words = text.split(" ");
-
-    return words.filter(word => wordList.has(word)).length;
-};
 
 voicesCombobox.onchange = _ => {
     if (synth.speaking) {
@@ -132,8 +123,6 @@ const play = () => {
     start_index = textarea.selectionStart < textarea.value.length ? textarea.selectionStart : 0;
     text = textarea.value.slice(start_index);
 
-    // Disable temporary, this generate problems for other languages
-    // selectVoice(text);
     speak(text);
 };
 
@@ -166,21 +155,6 @@ btnStop.addEventListener("click", _ => {
     }
     progressBar.text = "";
 })
-
-const selectVoice = (text) => {
-    let lang = "es";
-    if (countMatches(englishWords, text) > countMatches(spanishWords, text)) {
-        lang = "en";
-    }
-
-    for (let index = 0; index < voices.length; index++) {
-        const element = voices[index];
-        if (element.lang.startsWith(lang)) {
-            voicesCombobox.value = element.name;
-            break;
-        }
-    }
-};
 
 async function getDocumentSelectedText() {
     let text = await browser
