@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+    "name": "TextToSpeech",
+    "version": "1.0",
+    "description": "Play selected text using TextToSpeech browser API",
+    "browser_action": {
+        "default_icon": "icons/48.png",
+        "default_title": "Text To Speech",
+        "default_popup": "popup/index.html"
+    },
+    "permissions": [
+        "activeTab",
+        "storage"
+    ],
+    "icons": {
+        "24": "icons/24.png",
+        "48": "icons/48.png"
+    }
+}
