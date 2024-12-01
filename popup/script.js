@@ -13,11 +13,17 @@ const progressBar = document.querySelector("#progress");
 let voices = [];
 let speaking = false;
 
-let start_index = 0;
+let startIndex = 0;
 
 const progressBarColorSpeaking = "var(--light-orange)";
 const progressBarColorPaused = "var(--light-yellow)";
 const progressBarColorFinished = "var(--orange)";
+
+let config = {
+    volume: 10,
+    rate: 1,
+    voice: null,
+}
 
 const synth = window.speechSynthesis;
 synth.onvoiceschanged = _ => {
@@ -30,7 +36,40 @@ voicesCombobox.onchange = _ => {
     }
     const utterance = newUtterance(voicesCombobox.value);
     synth.speak(utterance);
-    localStorage.setItem("voice", voicesCombobox.value)
+
+    config.voice = voicesCombobox.value;
+    saveConfig();
+}
+
+function saveConfig() {
+    browser.storage.local.set({ config }).then(configSaved, onError);
+}
+
+async function loadConfig() {
+    try {
+        let item = await browser.storage.local.get("config");
+        gotConfig(item);
+    }
+    catch (error) {
+        onError(error);
+    }
+}
+
+function gotConfig(item) {
+    if (item.config) {
+        config = item.config;
+        ttsRate.value = config.rate;
+        ttsVolume.value = config.volume;
+    }
+    console.log("config", config);
+}
+
+function configSaved() {
+    console.log("Config saved.", config);
+}
+
+function onError(error) {
+    console.log(`Error: ${error}`);
 }
 
 function newUtterance(text) {
@@ -38,15 +77,15 @@ function newUtterance(text) {
     utterance.lang = voicesCombobox[voicesCombobox.selectedIndex].getAttribute("lang");
     utterance.voice = voices.find(voice => voice.name === voicesCombobox[voicesCombobox.selectedIndex].getAttribute("name"));
     // volume must be between 0 and 1
-    utterance.volume = ttsVolume.value / 10;
-    utterance.rate = ttsRate.value;
+    utterance.volume = config.volume / 10;
+    utterance.rate = config.rate;
 
     return utterance;
 }
 
 function highlightCurrentWord(event) {
     const text = textarea.value;
-    const start = event.charIndex + start_index;
+    const start = event.charIndex + startIndex;
     let end = start + text.slice(start).search(/\s/);
 
     if (end == start - 1) {
@@ -117,28 +156,31 @@ function loadVoices() {
     }
 }
 
-const play = () => {
+function playTextArea() {
     // if carret is at end of textbox, move to 0
     // else start from carret
-    start_index = textarea.selectionStart < textarea.value.length ? textarea.selectionStart : 0;
-    text = textarea.value.slice(start_index);
+    startIndex = textarea.selectionStart < textarea.value.length ? textarea.selectionStart : 0;
+    text = textarea.value.slice(startIndex);
 
     speak(text);
 };
 
-btnPlay.addEventListener("click", play);
+btnPlay.addEventListener("click", playTextArea);
 
-const reload = () => {
+function saveAndReload() {
+    config.volume = ttsVolume.value;
+    config.rate = ttsRate.value;
+    saveConfig();
     // if not speaking -> ignore
     // only play if speaking
     if (synth.paused || synth.speaking) {
         synth.cancel();
-        play();
+        playTextArea();
     }
 }
 
-ttsRate.addEventListener("click", reload);
-ttsVolume.addEventListener("click", reload);
+ttsRate.addEventListener("click", saveAndReload);
+ttsVolume.addEventListener("click", saveAndReload);
 
 btnPauseResume.addEventListener("click", _ => {
     if (synth.paused) {
@@ -156,33 +198,33 @@ btnStop.addEventListener("click", _ => {
     progressBar.text = "";
 })
 
-async function getDocumentSelectedText() {
-    let text = await browser
+async function readSelection() {
+    let selectedText = await browser
         .tabs
         .executeScript({
             code: "document.getSelection().toString()"
         });
 
-    textarea.value = text;
-    play();
+    textarea.value = selectedText;
+    playTextArea();
 }
 
-window.onload = function () {
+window.onload = async function () {
     if (synth.getVoices().length > 0) {
         loadVoices();
     };
 
-    previousSelectedVoice = localStorage.getItem("voice");
-    if (previousSelectedVoice !== null) {
+    await loadConfig();
+
+    if (config.voice !== null) {
         for (let index = 0; index < voices.length; index++) {
             const element = voices[index];
-            if (element.name === previousSelectedVoice) {
+            if (element.name === config.voice) {
                 voicesCombobox.value = element.name;
                 break;
             }
         }
     }
 
-
-    getDocumentSelectedText();
+    readSelection();
 };
