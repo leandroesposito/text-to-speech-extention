@@ -1,11 +1,21 @@
-:root {
-  --black: #0c0c0c;
-  --dark-grey: #282828;
-  --grey: #404040;
-  --orange: #ff8e01;
-  --light-orange: #ffaf00;
-  --light-yellow: #ffe280;
-  --light-grey: #cecece;
+body {
+  --main-background-color: #ffffff;
+  --body-background-color: #dfdfdf;
+  --secondary-background-color: #bebebe;
+  --accent-color: #ff8e01;
+  --in-progress: #ffaf00;
+  --paused-color: #ffe280;
+  --font-color: #161616;
+}
+
+body.dark-theme {
+  --main-background-color: #0c0c0c;
+  --body-background-color: #282828;
+  --secondary-background-color: #404040;
+  --accent-color: #ff8e01;
+  --in-progress: #ffaf00;
+  --paused-color: #ffe280;
+  --font-color: #cecece;
 }
 
 * {
@@ -14,8 +24,8 @@
 }
 
 body {
-  background-color: var(--black);
-  color: var(--light-grey);
+  background-color: var(--main-background-color);
+  color: var(--font-color);
 }
 
 div {
@@ -25,23 +35,53 @@ div {
 #main {
   padding: 0 1rem;
   margin: 0.1rem;
-  background-color: var(--dark-grey);
-  border: var(--dark-grey) solid 2px;
+  background-color: var(--body-background-color);
+  border: var(--body-background-color) solid 2px;
   border-radius: 1rem;
+}
+
+h3 {
+  margin: 0.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle-theme {
+  border: none;
+  background-color: var(--accent-color);
+  color: black;
+  justify-self: flex-end;
+  flex: 0 0 auto;
+  box-shadow: 2px 2px var(--font-color);
+}
+
+.toggle-theme:active {
+  box-shadow: none;
+  translate: 2px 2px;
 }
 
 input,
 select,
 textarea {
   outline: none !important;
-  background-color: var(--dark-grey);
-  color: var(--light-grey);
+  background-color: var(--body-background-color);
+  color: var(--font-color);
   border-radius: 0.5rem;
+  border: 2px solid var(--font-color);
 }
 
 #text {
   width: 100%;
   border-radius: 1rem;
+  padding: 0.5rem;
+}
+
+#text::selection {
+  background-color: var(--secondary-background-color);
 }
 
 #buttons {
@@ -49,7 +89,7 @@ textarea {
   padding: 0.5rem 0;
   align-items: center;
   width: 100%;
-  background-color: var(--grey);
+  background-color: var(--secondary-background-color);
   border-radius: 0.5rem;
 }
 
@@ -57,24 +97,24 @@ button {
   margin: 0 1rem;
   flex-grow: 1;
   display: inline-block;
-  background-color: var(--orange);
+  background-color: var(--accent-color);
   border-radius: 1rem;
-  border-color: var(--orange);
+  border-color: var(--accent-color);
 }
 
 #progress {
   text-align: center;
   width: 0%;
+  color: black;
 }
 
 #progressBar {
-  color: var(--black);
   width: 100%;
   margin: 1rem 0;
 }
 
 #progress,
 #progressBar {
-  background-color: var(--black);
+  background-color: var(--main-background-color);
   border-radius: 5px;
 }

@@ -10,19 +10,22 @@ const btnStop = document.querySelector("#btnStop");
 
 const progressBar = document.querySelector("#progress");
 
+const btnToggleTheme = document.querySelector(".toggle-theme");
+
 let voices = [];
 let speaking = false;
 
 let startIndex = 0;
 
-const progressBarColorSpeaking = "var(--light-orange)";
-const progressBarColorPaused = "var(--light-yellow)";
-const progressBarColorFinished = "var(--orange)";
+const progressBarColorSpeaking = "var(--in-progress)";
+const progressBarColorPaused = "var(--paused-color)";
+const progressBarColorFinished = "var(--accent-color)";
 
 let config = {
   volume: 10,
   rate: 1,
   voice: null,
+  darkTheme: false,
 };
 
 const synth = window.speechSynthesis;
@@ -59,6 +62,11 @@ function gotConfig(item) {
     config = item.config;
     ttsRate.value = config.rate;
     ttsVolume.value = config.volume;
+    if (config.darkTheme) {
+      document.body.classList.add("dark-theme");
+    } else {
+      document.body.classList.remove("dark-theme");
+    }
   }
   console.log("config", config);
 }
@@ -199,6 +207,19 @@ btnStop.addEventListener("click", (_) => {
     synth.cancel();
   }
   progressBar.text = "";
+});
+
+btnToggleTheme.addEventListener("click", (_) => {
+  if (config.darkTheme) {
+    document.body.classList.remove("dark-theme");
+    btnToggleTheme.textContent = "🌙";
+    config.darkTheme = false;
+  } else {
+    document.body.classList.add("dark-theme");
+    btnToggleTheme.textContent = "🌞";
+    config.darkTheme = true;
+  }
+  saveConfig();
 });
 
 async function readSelection() {
