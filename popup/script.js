@@ -63,9 +63,9 @@ function gotConfig(item) {
     ttsRate.value = config.rate;
     ttsVolume.value = config.volume;
     if (config.darkTheme) {
-      document.body.classList.add("dark-theme");
+      setDarkTheme();
     } else {
-      document.body.classList.remove("dark-theme");
+      setLightTheme();
     }
   }
   console.log("config", config);
@@ -211,16 +211,24 @@ btnStop.addEventListener("click", (_) => {
 
 btnToggleTheme.addEventListener("click", (_) => {
   if (config.darkTheme) {
-    document.body.classList.remove("dark-theme");
-    btnToggleTheme.textContent = "🌙";
+    setLightTheme();
     config.darkTheme = false;
   } else {
-    document.body.classList.add("dark-theme");
-    btnToggleTheme.textContent = "🌞";
+    setDarkTheme();
     config.darkTheme = true;
   }
   saveConfig();
 });
+
+function setDarkTheme() {
+  document.body.classList.add("dark-theme");
+  btnToggleTheme.textContent = "🌞";
+}
+
+function setLightTheme() {
+  document.body.classList.remove("dark-theme");
+  btnToggleTheme.textContent = "🌙";
+}
 
 async function readSelection() {
   let selectedText = await browser.tabs.executeScript({
