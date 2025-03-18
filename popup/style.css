@@ -1,80 +1,80 @@
 :root {
-    --black: #0c0c0c;
-    --dark-grey: #282828;
-    --grey: #404040;
-    --orange: #ff8e01;
-    --light-orange: #ffaf00;
-    --light-yellow: #ffe280;
-    --light-grey: #cecece;
+  --black: #0c0c0c;
+  --dark-grey: #282828;
+  --grey: #404040;
+  --orange: #ff8e01;
+  --light-orange: #ffaf00;
+  --light-yellow: #ffe280;
+  --light-grey: #cecece;
 }
 
 * {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    ;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: var(--black);
-    color: var(--light-grey);
+  background-color: var(--black);
+  color: var(--light-grey);
 }
 
 div {
-    margin: .5rem 0;
+  margin: 0.5rem 0;
 }
 
 #main {
-    padding: 0 1rem;
-    margin: .1rem;
-    background-color: var(--dark-grey);
-    border: var(--dark-grey) solid 2px;
-    border-radius: 1rem;
+  padding: 0 1rem;
+  margin: 0.1rem;
+  background-color: var(--dark-grey);
+  border: var(--dark-grey) solid 2px;
+  border-radius: 1rem;
 }
 
 input,
 select,
 textarea {
-    outline: none !important;
-    background-color: var(--dark-grey);
-    color: var(--light-grey);
-    border-radius: .5rem;
+  outline: none !important;
+  background-color: var(--dark-grey);
+  color: var(--light-grey);
+  border-radius: 0.5rem;
 }
 
 #text {
-    width: 100%;
-    border-radius: 1rem;
+  width: 100%;
+  border-radius: 1rem;
 }
 
 #buttons {
-    display: flex;
-    padding: .5rem 0;
-    align-items: center;
-    width: 100%;
-    background-color: var(--grey);
-    border-radius: .5rem;
+  display: flex;
+  padding: 0.5rem 0;
+  align-items: center;
+  width: 100%;
+  background-color: var(--grey);
+  border-radius: 0.5rem;
 }
 
 button {
-    margin: 0 1rem;
-    flex-grow: 1;
-    display: inline-block;
-    background-color: var(--orange);
-    border-radius: 1rem;
-    border-color: var(--orange);
+  margin: 0 1rem;
+  flex-grow: 1;
+  display: inline-block;
+  background-color: var(--orange);
+  border-radius: 1rem;
+  border-color: var(--orange);
 }
 
 #progress {
-    text-align: center;
-    width: 0%;
+  text-align: center;
+  width: 0%;
 }
 
 #progressBar {
-    color: var(--black);
-    width: 100%;
-    margin: 1rem 0;
+  color: var(--black);
+  width: 100%;
+  margin: 1rem 0;
 }
 
 #progress,
 #progressBar {
-    background-color: var(--black);
-    border-radius: 5px;
+  background-color: var(--black);
+  border-radius: 5px;
 }
