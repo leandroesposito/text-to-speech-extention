@@ -67,6 +67,12 @@ function gotConfig(item) {
     } else {
       setLightTheme();
     }
+    if (config.textareaHeight) {
+      textarea.style.height = config.textareaHeight + "px";
+    }
+    if (config.textareaWidth) {
+      textarea.style.width = config.textareaWidth + "px";
+    }
   }
   console.log("config", config);
 }
@@ -217,6 +223,15 @@ btnToggleTheme.addEventListener("click", (_) => {
     setDarkTheme();
     config.darkTheme = true;
   }
+  saveConfig();
+});
+
+textarea.addEventListener("mouseup", (_) => {
+  const width = textarea.clientWidth;
+  const height = textarea.clientHeight;
+
+  config.textareaWidth = width;
+  config.textareaHeight = height;
   saveConfig();
 });
 
