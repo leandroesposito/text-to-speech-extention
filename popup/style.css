@@ -76,6 +76,7 @@ textarea {
 
 #text {
   width: 100%;
+  box-sizing: border-box;
   border-radius: 1rem;
   padding: 0.5rem;
 }
